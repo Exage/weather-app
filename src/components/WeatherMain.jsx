@@ -22,7 +22,7 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
 
     const getCurrentLocation = async (city) => {
         try {
-            const currentLocation = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${api}`
+            const currentLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${api}`
     
             const fetchData = await fetch(currentLocation)
             const data = await fetchData.json()
