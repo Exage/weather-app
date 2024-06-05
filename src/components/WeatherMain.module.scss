@@ -1,0 +1,162 @@
+.weatherMain {
+    max-width: 54.5rem;
+    width: 100%;
+
+    margin: 0 auto;
+}
+
+.headingBlock {
+    position: relative;
+    text-align: center;
+
+    padding-bottom: 4rem;
+    margin-bottom: 6rem;
+
+    z-index: 10;
+
+    &Title {
+        font-size: 4rem;
+        letter-spacing: 0.2rem;
+    }
+
+    &Sup {
+        font-size: 1.6rem;
+        letter-spacing: 0.1rem;
+    }
+
+    &TempHL {
+        display: flex;
+        justify-content: center;
+
+        margin-top: 1rem;
+
+        column-gap: 4rem
+    }
+
+    &Temp {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+
+        transform: translate(-50%, 50%);
+
+        display: flex;
+        justify-content: center;
+        max-width: 27rem;
+        width: 100%;
+
+        margin-bottom: 0;
+        
+        z-index: 15;
+
+        &Title {
+            font-size: 3.2rem;
+            position: relative;
+
+            &::after {
+                content: '°';
+                position: absolute;
+                top: 0;
+                right: -1.5rem;
+                color: var(--yellow);
+            }
+        }
+    }
+}
+
+.regBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &Icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            transition: transform .5s ease;
+        }
+    }
+}
+
+.sunBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+
+    margin-bottom: 0;
+
+    &Start, &Finish {
+        text-align: center;
+    }
+
+    &Icon {
+        &Title {
+            margin-top: 0.3rem;
+        }
+    }
+
+    &Progress {
+        position: relative;
+
+        flex: 1;
+        height: 3rem;
+        
+        margin: 0 2rem;
+    }
+
+    .progressBar {
+        position: absolute;
+        height: 3px;
+
+        border-radius: 5px;
+
+        background-color: var(--black);
+
+        &Left {
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+
+            // width: calc(50% - 1.4rem);
+            width: 0;
+        }
+
+        &Right {
+            top: 50%;
+            transform: translateY(-50%);
+            right: 0;
+
+            // width: calc(50% - 1.4rem);
+            width: 0;
+        }
+
+        &Mid {
+            position: relative;
+
+            &Wrapper {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            &Title {
+                position: absolute;
+                top: -2.4rem;
+                left: 50%;
+                transform: translateX(-50%);
+                font-weight: 600;
+            }
+
+            &Icon {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}

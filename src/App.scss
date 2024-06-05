@@ -1,0 +1,132 @@
+@import './_vars';
+
+@mixin weather-type($day) {
+
+    $day-padded: if($day < 10, "0#{$day}", $day);
+
+    &[data-type="#{$day-padded}d"] {
+        background-image: url(./assets/photos/weather_bg_#{$day-padded}d.jpg);
+
+        .weatherapp__icon {
+            fill: var(--black);
+        }
+        
+        .weatherapp__block {
+            color: var(--black);
+            background-color: var(--white-large-fill);
+        }
+
+        .weatherapp__headingblock--icon {
+            background-image: url(./assets/weather-icons/weather_icon_#{$day-padded}d.png);
+        }
+
+        .pbar {
+            background-color: var(--black);
+        }
+    }
+
+    &[data-type="#{$day-padded}n"] {
+        background-image: url(./assets/photos/weather_bg_#{$day-padded}n.jpg);
+
+        .weatherapp__block {
+            color: var(--white);
+            background-color: var(--black-large-fill);
+        }
+
+        .weatherapp__headingblock--icon {
+            background-image: url(./assets/weather-icons/weather_icon_#{$day-padded}n.png);
+        }
+
+        .weatherapp__icon {
+            fill: var(--white);
+        }
+
+        .pbar {
+            background-color: var(--white);
+        }
+    }
+}
+
+.weatherapp__wrapper {
+    width: 100%;
+    min-height: 100vh;
+
+    background-image: url(./assets/photos/weather_bg_01d.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    // BG
+    @include weather-type(1);
+    @include weather-type(2);
+    @include weather-type(3);
+    @include weather-type(4);
+    @include weather-type(9);
+    @include weather-type(10);
+    @include weather-type(11);
+    @include weather-type(13);
+    @include weather-type(50);
+
+    transition: background-image .5s ease;
+}
+
+.weatherapp__block {
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba($black, 0.25);
+
+    margin-bottom: 3rem;
+
+    border-radius: 30px;
+
+    padding: 15px 30px;
+
+    &--title {
+        font-weight: 600;
+        font-size: 2.4rem;
+        line-height: 1;
+
+        &.sm {
+            font-size: 1.4rem;
+        }
+    }
+
+    &--regular {
+        font-size: 1.4rem;
+        font-weight: 400;
+
+        line-height: 1;
+    }
+
+    & .yellow {
+        color: var(--yellow);
+    }
+
+    &--row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 3.5rem;
+    }
+}
+
+.weatherapp__headingblock--icon {
+    position: absolute;
+    top: -6rem;
+    left: -5rem;
+
+    width: 12rem;
+    height: 12rem;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.weatherapp__icon {
+    fill: var(--black);
+    
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
