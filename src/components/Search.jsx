@@ -15,7 +15,8 @@ export const Search = ({ getWeatherByLocation, getWeatherByCityName }) => {
         _.debounce(async (query) => {
             if (query.trim() !== '') {
                 try {
-                    const result = await axios.get(`http://localhost:3001/getCity?city=${query.replace(/\s/g, '').toLocaleLowerCase()}`)
+                    const url = 'https://test-weather-ifxtbtdvj-exages-projects.vercel.app'
+                    const result = await axios.get(`${url}/getCity?city=${query.replace(/\s/g, '').toLocaleLowerCase()}`)
                     setResults(result.data)
                 } catch (err) {
                     console.error(err)
