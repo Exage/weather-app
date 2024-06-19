@@ -119,10 +119,14 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+
+    transition: background-image .5s ease;
 }
 
 .weatherapp__icon {
     fill: var(--black);
+
+    transition: transform .5s ease;
     
     div {
         display: flex;

@@ -11,7 +11,11 @@ import sunset from '../assets/icons/sunset.svg'
 import sun from '../assets/icons/sun.svg'
 import moon from '../assets/icons/moon.svg'
 
+<<<<<<< HEAD
 export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
+=======
+export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }) => {
+>>>>>>> 5dc843d6ce257d1bcc4f06f0121a78e160c058b6
     const [weather, setWeather] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -23,14 +27,19 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
             const fetchData = await fetch(currentLocation)
             const data = await fetchData.json()
     
-            const lat = data[0]['lat']
-            const lon = data[0]['lon']
-    
-            return { lat, lon }
+            if (data.length > 0) {
+                const lat = data[0]['lat']
+                const lon = data[0]['lon']
+        
+                return { lat, lon }   
+            }
+
+            return null
     
         } catch (error) {
             console.error('ПИЗДЕЦ!!!!!!!!\n', error)
             setError(error)
+            setCurrentCity('brest,by')
         }
     }
     
@@ -55,10 +64,17 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
             setLoading(true)
 
             const location = await getCurrentLocation(currentCity)
-            const weatherData = await getWeather(location.lat, location.lon)
+
+            if (location) {
+                
+                const weatherData = await getWeather(location.lat, location.lon)
     
-            setWeather(weatherData)
-            setWeatherType(weatherData.weather[0].icon)
+                setWeather(weatherData)
+                setWeatherType(weatherData.weather[0].icon)
+
+            } else {
+                alert('Your city not found')
+            }
 
         } catch (error) {
             setError(error)
@@ -69,7 +85,7 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [currentCity])
 
     const convertTime = (unix_timestamp) => {
 
@@ -108,6 +124,8 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
             <h1>{error}</h1>
         )
     }
+
+    // 123
 
     return (
         <div className={`${classes.weatherMain}`}>
