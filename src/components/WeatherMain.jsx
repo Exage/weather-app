@@ -9,11 +9,7 @@ import cloudsIcon from '../assets/icons/clouds.svg'
 import sunrise from '../assets/icons/sunrise.svg'
 import sunset from '../assets/icons/sunset.svg'
 import sun from '../assets/icons/sun.svg'
-
 import moon from '../assets/icons/moon.svg'
-
-const sunrisetest = 1717466906
-const sunsettest = 1717526225
 
 export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
     const [weather, setWeather] = useState({})
@@ -113,19 +109,8 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
         )
     }
 
-    // if (!loading) {
-    //     weather.sys.sunrise = 123
-    //     weather.sys.sunset = 123
-    // }
-
     return (
-        <div 
-            className={`${classes.weatherMain}`}
-
-            style={{
-                paddingTop: '10rem'
-            }}
-        >
+        <div className={`${classes.weatherMain}`}>
     
             <div className={`weatherapp__block ${classes.headingBlock}`}>
 
