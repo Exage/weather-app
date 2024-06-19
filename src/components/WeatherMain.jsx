@@ -12,10 +12,7 @@ import sun from '../assets/icons/sun.svg'
 
 import moon from '../assets/icons/moon.svg'
 
-const sunrisetest = 1717466906
-const sunsettest = 1717526225
-
-export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
+export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }) => {
     const [weather, setWeather] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -27,14 +24,19 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
             const fetchData = await fetch(currentLocation)
             const data = await fetchData.json()
     
-            const lat = data[0]['lat']
-            const lon = data[0]['lon']
-    
-            return { lat, lon }
+            if (data.length > 0) {
+                const lat = data[0]['lat']
+                const lon = data[0]['lon']
+        
+                return { lat, lon }   
+            }
+
+            return null
     
         } catch (error) {
             console.error('ПИЗДЕЦ!!!!!!!!\n', error)
             setError(error)
+            setCurrentCity('brest,by')
         }
     }
     
@@ -59,10 +61,17 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
             setLoading(true)
 
             const location = await getCurrentLocation(currentCity)
-            const weatherData = await getWeather(location.lat, location.lon)
+
+            if (location) {
+                
+                const weatherData = await getWeather(location.lat, location.lon)
     
-            setWeather(weatherData)
-            setWeatherType(weatherData.weather[0].icon)
+                setWeather(weatherData)
+                setWeatherType(weatherData.weather[0].icon)
+
+            } else {
+                alert('Your city not found')
+            }
 
         } catch (error) {
             setError(error)
@@ -73,7 +82,7 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [currentCity])
 
     const convertTime = (unix_timestamp) => {
 
@@ -112,11 +121,6 @@ export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
             <h1>{error}</h1>
         )
     }
-
-    // if (!loading) {
-    //     weather.sys.sunrise = 123
-    //     weather.sys.sunset = 123
-    // }
 
     return (
         <div 
