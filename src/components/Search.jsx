@@ -1,68 +1,114 @@
-import React, { useState } from 'react'
-import cityData from '../utils/city.list.json'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import axios from 'axios'
+import _ from 'lodash'
+import { ReactSVG } from 'react-svg'
+import searchIcon from '../assets/icons/magnify-icon.svg'
 
-export const Search = ({ setCurrentCity }) => {
+import styles from './Search.module.scss'
 
-    const [inputText, setInputText] = useState('')
-    const [filteredData, setFilteredData] = useState([])
+export const Search = ({ getWeatherByLocation, getWeatherByCityName }) => {
+    const [search, setSearch] = useState('')
+    const [results, setResults] = useState([])
+    const [focus, setFocus] = useState(false)
 
-    const handleFilter = (Event) => {
-        const searchWord = Event.target.value
-        setInputText(searchWord)
+    const debouncedSearch = useRef(
+        _.debounce(async (query) => {
+            if (query.trim() !== '') {
+                try {
+                    const result = await axios.get(`http://localhost:3001/getCity?city=${query.replace(/\s/g, '').toLocaleLowerCase()}`)
+                    setResults(result.data)
+                } catch (err) {
+                    console.error(err)
+                }
+            } else {
+                setResults([])
+            }
+        }, 500)
+    ).current
 
-        // const newFilter = cityData.filter(value => {
-        //     return value.name.includes(searchWord)
-        // }) 
+    useEffect(() => {
+        debouncedSearch(search.replace(/\s/g, ''))
+    }, [search])
 
-        // setFilteredData(newFilter)
+    const handleFocus = () => {
+        setFocus(true)
     }
 
-    const submitSearch = (Event) => {
-        Event.preventDefault()
+    const handleBlur = () => {
+        setFocus(false)
+    }
 
-        setInputText('')
-        setCurrentCity(inputText)
+    const closeSearch = () => {
+        setSearch('')
+        setFocus(false)
+        setResults([])
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        getWeatherByCityName(search.replace(/\s/g, '').toLocaleLowerCase())
+        
+        closeSearch()
+    }
+
+    const handleClick = async (index) => {
+        const location = results[index].coord
+        getWeatherByLocation(location.lat, location.lon)
+        
+        closeSearch()
+    }
+
+    const handleOverlayClick = () => {
+        closeSearch()
     }
 
     return (
-        <div style={{
-            position: 'relative'
-        }}>
+        <div className={styles.searchContainer}>
+            <div className={styles.search}>
+                <div 
+                    className={
+                        `${styles.searchWrapper}${search.length > 0 ? ' ' + styles.searchWrapperOpen : ''}${focus ? ' ' + styles.searchWrapperFocus : ''}`
+                    }
+                >
+                    <form onSubmit={handleSubmit}
+                        className={styles.searchForm}
+                    >
+                        <ReactSVG src={searchIcon} className={`${styles.searchFormIcon}${focus ? ' ' + styles.searchFormIconFocus : ''}`} />
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(event) => setSearch(event.target.value)}
 
-            <form onSubmit={submitSearch}>
-                <input 
-                    type="text" 
-                    
-                    value={inputText} 
-                    onChange={handleFilter}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
 
-                    style={{
-                        width: '100%'
-                    }}  
-                />
-            </form>
-            {filteredData.length != 0 && (
-                <div style={{
-                    position: 'absolute',
-                    top: '100%',
-                    left: 0,
-                    padding: '1rem',
-                    width: '100%',
-                    backgroundColor: '#fff',
-                    zIndex: 100000
-                }}>
+                            placeholder='search city'
 
-                    {filteredData.map((item, key) => {
-                        return (
-                            <div key={key}>
-                                {item}
-                            </div>
-                        )
-                    })}
-
+                            className={`weatherapp__block ${styles.searchFormInput}`}
+                        />
+                    </form>
+                    <div 
+                        className={styles.searchResults}
+                        style={{
+                            height: search.length > 0 ? `${results.length * 3.5}rem` : '0px',
+                        }}
+                    >
+                        {results.map((item, key) => (
+                            <button 
+                                className={styles.searchResultsItem}
+                                onClick={() => handleClick(key)}
+                                key={key}
+                            >
+                                {item.name}, {item.country}
+                            </button>
+                        ))}
+                    </div>
                 </div>
-            )}
-
+            </div>
+            <div
+                onClick={handleOverlayClick} 
+                className={`${styles.searchOverlay}${search.length > 0 ? ' ' + styles.searchOverlayFocus : ''}`}
+            ></div>
         </div>
     )
 }

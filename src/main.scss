@@ -4,12 +4,18 @@
 
 :root {
     --white: #fcfff7;
-    --white-large-fill: rgba(252, 255, 247, 0.57);
-
     --black: #2F2F2F;
-    --black-large-fill: rgba(47, 47, 47, 0.57);
 
     --yellow: #FFE900;
+
+    --primary: #2F2F2F;
+    --secondary: #fcfff7;
+
+    --white-rgb: 252, 255, 247;
+    --black-rgb: 47, 47, 47;
+
+    --primary-rgb: 47, 47, 47;
+    --secondary-rgb: 252, 255, 247;
 }
 
 html {
@@ -50,4 +56,27 @@ h1, h2, h3, h4, h5, h6, p {
 
     margin: 0 auto;
     padding: 0 10px;
+}
+
+input {
+    font-size: inherit;
+    font-family: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    border: none;
+    outline: none;
+    color: inherit;
+    background: none;
+    outline: none;
+    cursor: pointer;
 }

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { isEmpty } from '../utils'
 
 import classes from './WeatherMain.module.scss'
 import { ReactSVG } from 'react-svg'
@@ -11,81 +12,7 @@ import sunset from '../assets/icons/sunset.svg'
 import sun from '../assets/icons/sun.svg'
 import moon from '../assets/icons/moon.svg'
 
-<<<<<<< HEAD
-export const WeatherMain = ({ api, currentCity, setWeatherType }) => {
-=======
-export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }) => {
->>>>>>> 5dc843d6ce257d1bcc4f06f0121a78e160c058b6
-    const [weather, setWeather] = useState({})
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
-
-    const getCurrentLocation = async (city) => {
-        try {
-            const currentLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&appid=${api}`
-    
-            const fetchData = await fetch(currentLocation)
-            const data = await fetchData.json()
-    
-            if (data.length > 0) {
-                const lat = data[0]['lat']
-                const lon = data[0]['lon']
-        
-                return { lat, lon }   
-            }
-
-            return null
-    
-        } catch (error) {
-            console.error('ПИЗДЕЦ!!!!!!!!\n', error)
-            setError(error)
-            setCurrentCity('brest,by')
-        }
-    }
-    
-    const getWeather = async (lat, lon) => {
-        try {
-            const currentLocation = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${api}`
-    
-            const fetchData = await fetch(currentLocation) 
-            const data = await fetchData.json()
-    
-            return data
-    
-        } catch (error) {
-            console.error('ПИЗДЕЦ!!!!!!!!\n', error)
-            setError(error)
-        }
-    }
-
-    const getData = async () => {
-        try {
-
-            setLoading(true)
-
-            const location = await getCurrentLocation(currentCity)
-
-            if (location) {
-                
-                const weatherData = await getWeather(location.lat, location.lon)
-    
-                setWeather(weatherData)
-                setWeatherType(weatherData.weather[0].icon)
-
-            } else {
-                alert('Your city not found')
-            }
-
-        } catch (error) {
-            setError(error)
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-        getData()
-    }, [currentCity])
+export const WeatherMain = ({ loading, weather }) => {
 
     const convertTime = (unix_timestamp) => {
 
@@ -119,13 +46,11 @@ export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }
         return isDaytime
     }
 
-    if (error) {
-        return (
-            <h1>{error}</h1>
-        )
-    }
+    console.log(isEmpty(weather))
 
-    // 123
+    if (isEmpty(weather)) {
+        return <h1 style={{ textAlign: 'center' }}>Placeholder</h1>
+    }
 
     return (
         <div className={`${classes.weatherMain}`}>
@@ -135,10 +60,10 @@ export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }
                 <div className={`weatherapp__headingblock--icon`}></div>
 
                 <div className={`weatherapp__block--regular ${classes.headingBlockSup}`}>
-                    {loading ? '--' : weather.weather[0].description}
+                    {(loading || !weather) ? '--' : weather.weather[0].description}
                 </div>
                 <h1 className={`weatherapp__block--title ${classes.headingBlockTitle}`}>
-                    {loading ? '--' : weather.name}, {loading ? '--' : weather.sys.country}
+                    {(loading || !weather) ? '--' : weather.name}, {loading || !weather ? '--' : weather.sys.country}
                 </h1>
 
                 <div className={classes.headingBlockTempHL}>
@@ -148,7 +73,7 @@ export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }
                             &nbsp;
                         </span>
 
-                        {loading ? '--' : weather.main.temp_min}
+                        {loading || !weather ? '--' : weather.main.temp_min}
 
                         <span className='yellow'>
                             &nbsp;
@@ -161,7 +86,7 @@ export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }
                             &nbsp;
                         </span>
 
-                        {loading ? '--' : weather.main.temp_max}
+                        {loading || !weather ? '--' : weather.main.temp_max}
 
                         <span className='yellow'>
                             &nbsp;
@@ -182,9 +107,6 @@ export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }
                 <div className={`weatherapp__block ${classes.regBlock}`}>
                     
                     <div className={classes.regBlockIcon}>
-                        {/* <img src={windIcon} style={{
-                            transform: `rotate(${loading ? 0 : weather.wind.deg}deg)`
-                        }} /> */}
 
                         <ReactSVG src={windIcon} style={{
                             transform: `rotate(${loading ? 0 : weather.wind.deg}deg)`
@@ -273,7 +195,7 @@ export const WeatherMain = ({ api, currentCity, setCurrentCity, setWeatherType }
                         <ReactSVG src={sunset} className='weatherapp__icon' />
                     </div>
                     <h1 className={`weatherapp__block--title sm ${classes.sunBlockIconTitle}`}>
-                        {loading ? '--' : convertTime(weather.sys.sunset)}
+                        {loading  ? '--' : convertTime(weather.sys.sunset)}
                     </h1>
                 </div>
                 

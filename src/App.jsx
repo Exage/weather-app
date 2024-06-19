@@ -1,24 +1,62 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import './App.scss'
 import { WeatherMain } from './components/WeatherMain'
 import { Search } from './components/Search'
-
-const apiKey = '8dea2ffdec495e945e209a98d744ab5b'
+import { getWeather, getCityLocation, isEmpty } from './utils'
 
 function App() {
+
+    const [currentData, setCurrentData] = useState({})
+    const [loading, setLoading] = useState(false)
+
+    const getWeatherByLocation = async (lat, lon) => {
+        try {
+
+            setLoading(true)
+            const weatherData = await getWeather(lat, lon)
+
+            setCurrentData(weatherData)
+
+        } catch (error) {
+            console.error('Error detected!', error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const getWeatherByCityName = async (city) => {
+        try {
+
+            setLoading(true)
+
+            const location = await getCityLocation(city)
+
+            if (location) {
+                
+                const weatherData = await getWeather(location.lat, location.lon)
     
-    const [currentCity, setCurrentCity] = useState('brest,by')
-    const [weatherType, setWeatherType] = useState('')
+                setCurrentData(weatherData)
+
+            } else {
+                alert('Your city not found')
+            }
+
+        } catch (error) {
+            console.error('Error detected!', error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <div className="App">
 
-            <div className="weatherapp__wrapper" data-type={weatherType ? weatherType : '00d'}>
+            <div className="weatherapp__wrapper" data-type={ isEmpty(currentData) ? '00d' : currentData.weather[0].icon }>
                 <div className="container">
 
-                    <Search setCurrentCity={setCurrentCity} />
-                    <WeatherMain api={apiKey} currentCity={currentCity} setWeatherType={setWeatherType} />
+                    <Search getWeatherByLocation={getWeatherByLocation} getWeatherByCityName={getWeatherByCityName} />
+                    <WeatherMain loading={loading} weather={currentData} />
                 
                 </div>
             </div>

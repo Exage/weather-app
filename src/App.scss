@@ -5,44 +5,28 @@
     $day-padded: if($day < 10, "0#{$day}", $day);
 
     &[data-type="#{$day-padded}d"] {
-        background-image: url(./assets/photos/weather_bg_#{$day-padded}d.jpg);
-
-        .weatherapp__icon {
-            fill: var(--black);
-        }
+        --primary: #2F2F2F;
+        --secondary: #fcfff7;
+        --primary-rgb: 47, 47, 47;
+        --secondary-rgb: 252, 255, 247;
         
-        .weatherapp__block {
-            color: var(--black);
-            background-color: var(--white-large-fill);
-        }
+        background-image: url(./assets/photos/weather_bg_#{$day-padded}d.jpg);
 
         .weatherapp__headingblock--icon {
             background-image: url(./assets/weather-icons/weather_icon_#{$day-padded}d.png);
         }
-
-        .pbar {
-            background-color: var(--black);
-        }
     }
 
     &[data-type="#{$day-padded}n"] {
-        background-image: url(./assets/photos/weather_bg_#{$day-padded}n.jpg);
+        --primary: #fcfff7;
+        --secondary: #2F2F2F;
+        --primary-rgb: 252, 255, 247;
+        --secondary-rgb: 47, 47, 47;
 
-        .weatherapp__block {
-            color: var(--white);
-            background-color: var(--black-large-fill);
-        }
+        background-image: url(./assets/photos/weather_bg_#{$day-padded}n.jpg);
 
         .weatherapp__headingblock--icon {
             background-image: url(./assets/weather-icons/weather_icon_#{$day-padded}n.png);
-        }
-
-        .weatherapp__icon {
-            fill: var(--white);
-        }
-
-        .pbar {
-            background-color: var(--white);
         }
     }
 }
@@ -50,6 +34,7 @@
 .weatherapp__wrapper {
     width: 100%;
     min-height: 100vh;
+    padding: 4.5rem 0;
 
     background-image: url(./assets/photos/weather_bg_01d.jpg);
     background-size: cover;
@@ -71,14 +56,17 @@
 }
 
 .weatherapp__block {
+    color: var(--primary);
+    background-color: rgba(var(--secondary-rgb), 0.57);
+
     backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba($black, 0.25);
+    box-shadow: 0 0 20px rgba(var(--black), 0.25);
 
     margin-bottom: 3rem;
 
     border-radius: 30px;
 
-    padding: 15px 30px;
+    padding: 1.5rem 3rem;
 
     &--title {
         font-weight: 600;
@@ -98,7 +86,7 @@
     }
 
     & .yellow {
-        color: var(--yellow);
+        color: $yellow;
     }
 
     &--row {
@@ -124,7 +112,7 @@
 }
 
 .weatherapp__icon {
-    fill: var(--black);
+    fill: var(--primary);
 
     transition: transform .5s ease;
     

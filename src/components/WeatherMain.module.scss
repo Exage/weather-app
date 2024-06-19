@@ -1,3 +1,5 @@
+@import '../vars';
+
 .weatherMain {
     max-width: 54.5rem;
     width: 100%;
@@ -58,7 +60,7 @@
                 position: absolute;
                 top: 0;
                 right: -1.5rem;
-                color: var(--yellow);
+                color: $yellow;
             }
         }
     }
@@ -115,7 +117,7 @@
 
         border-radius: 5px;
 
-        background-color: var(--black);
+        background-color: var(--primary);
 
         &Left {
             top: 50%;
