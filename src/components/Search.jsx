@@ -15,7 +15,7 @@ export const Search = ({ getWeatherByLocation, getWeatherByCityName }) => {
         _.debounce(async (query) => {
             if (query.trim() !== '') {
                 try {
-                    const url = 'https://test-weather-ifxtbtdvj-exages-projects.vercel.app'
+                    const url = 'https://weather-app-two-kappa-19.vercel.app'
                     const result = await axios.get(`${url}/getCity?city=${query.replace(/\s/g, '').toLocaleLowerCase()}`)
                     setResults(result.data)
                 } catch (err) {
