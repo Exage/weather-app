@@ -5,6 +5,7 @@
     width: 100%;
 
     margin: 0 auto;
+    margin-top: 6rem;
 }
 
 .headingBlock {
@@ -15,6 +16,41 @@
     margin-bottom: 6rem;
 
     z-index: 10;
+
+    &Pin {
+        display: flex;
+        width: 1.5rem;
+        height: 1.5rem;
+
+        position: absolute;
+        top: 2rem;
+        right: 3rem;
+
+
+        transition: transform .2s ease;
+
+        div {
+            display: flex;
+        }
+            
+        svg {
+            fill: var(--primary);
+
+            transition: fill .2s ease;
+        }
+
+        &Icon {
+            padding: 0;
+        }
+
+        &Active {
+            transform: rotate(-45deg);
+
+            svg {
+                fill: var(--yellow);
+            }
+        }
+    }
 
     &Title {
         font-size: 4rem;

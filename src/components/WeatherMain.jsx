@@ -1,4 +1,5 @@
 import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { isEmpty } from '../utils'
 
 import classes from './WeatherMain.module.scss'
@@ -11,8 +12,11 @@ import sunrise from '../assets/icons/sunrise.svg'
 import sunset from '../assets/icons/sunset.svg'
 import sun from '../assets/icons/sun.svg'
 import moon from '../assets/icons/moon.svg'
+import pin from '../assets/icons/pin.svg'
 
-export const WeatherMain = ({ loading, weather }) => {
+export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
+
+    const isFavorite = favorites.some(obj => obj.id === weather.id)
 
     const convertTime = (unix_timestamp) => {
 
@@ -21,14 +25,14 @@ export const WeatherMain = ({ loading, weather }) => {
         const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
         const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
 
-        const formattedTime = `${hours}:${minutes}` 
+        const formattedTime = `${hours}:${minutes}`
 
         return formattedTime
     }
 
     const calcSunPos = (start, end) => {
         const now = weather.dt;
-        
+
         if (now < start || now > end) {
             // Ночь
             return now < start ? 50 : 100;
@@ -46,16 +50,36 @@ export const WeatherMain = ({ loading, weather }) => {
         return isDaytime
     }
 
-    console.log(isEmpty(weather))
+    const handlePinBtn = () => {
+        if (favorites.some(obj => obj.id === weather.id)) {
+            clearFavorites()
+        } else {
+            setFavorites([...favorites, weather])
+        }
+    }
+
+    const clearFavorites = () => {
+        const newFavorites = favorites.filter(item => weather.id !== item.id)
+        setFavorites(newFavorites)
+    }
 
     if (isEmpty(weather)) {
-        return <h1 style={{ textAlign: 'center' }}>Placeholder</h1>
+        return <h1 style={{ textAlign: 'center', marginTop: '5rem' }}>Placeholder</h1>
     }
 
     return (
         <div className={`${classes.weatherMain}`}>
-    
+
             <div className={`weatherapp__block ${classes.headingBlock}`}>
+
+                <div 
+                    className={`${classes.headingBlockPin}${isFavorite ? ' ' + classes.headingBlockPinActive : ''}`} 
+                    onClick={handlePinBtn}
+                >
+                    <button disabled={loading} className={classes.headingBlockPinIcon}>
+                        <ReactSVG src={pin} />
+                    </button>
+                </div>
 
                 <div className={`weatherapp__headingblock--icon`}></div>
 
@@ -82,7 +106,7 @@ export const WeatherMain = ({ loading, weather }) => {
                     </div>
                     <div className='weatherapp__block--title sm'>
                         <span className='yellow'>
-                            H. 
+                            H.
                             &nbsp;
                         </span>
 
@@ -105,7 +129,7 @@ export const WeatherMain = ({ loading, weather }) => {
 
             <div className="weatherapp__block--row">
                 <div className={`weatherapp__block ${classes.regBlock}`}>
-                    
+
                     <div className={classes.regBlockIcon}>
 
                         <ReactSVG src={windIcon} style={{
@@ -116,39 +140,39 @@ export const WeatherMain = ({ loading, weather }) => {
 
                     <div>
                         <span className='weatherapp__block--title'>
-                            {loading ? '--' : (weather.wind.speed * 3.6).toFixed(1)} 
+                            {loading ? '--' : (weather.wind.speed * 3.6).toFixed(1)}
                         </span>
                         &nbsp;
-                        <span className='weatherapp__block--regular'> 
+                        <span className='weatherapp__block--regular'>
                             KPH
                         </span>
-                        
+
                     </div>
 
                 </div>
                 <div className={`weatherapp__block ${classes.regBlock}`}>
-                    
+
                     <div className={classes.regBlockIcon}>
                         <ReactSVG src={cloudsIcon} className='weatherapp__icon' />
                     </div>
 
                     <div>
                         <span className='weatherapp__block--title'>
-                            {loading ? '--' : weather.clouds.all} 
+                            {loading ? '--' : weather.clouds.all}
                         </span>
                         &nbsp;
-                        <span className='weatherapp__block--regular'> 
+                        <span className='weatherapp__block--regular'>
                             %
                         </span>
-                        
+
                     </div>
 
                 </div>
             </div>
 
             <div className={`weatherapp__block ${classes.sunBlock}`}>
-                    
-                
+
+
                 <div className={classes.sunBlockStart}>
                     <div className={classes.sunBlockStartIcon}>
                         <ReactSVG src={sunrise} className='weatherapp__icon' />
@@ -159,7 +183,7 @@ export const WeatherMain = ({ loading, weather }) => {
                 </div>
 
                 <div className={classes.sunBlockProgress}>
-                    <div 
+                    <div
                         className={`pbar ${classes.progressBar} ${classes.progressBarLeft}`}
                         style={{
                             width: `calc(${loading ? 50 : calcSunPos(weather.sys.sunrise, weather.sys.sunset)}% - 1.4rem)`
@@ -175,12 +199,12 @@ export const WeatherMain = ({ loading, weather }) => {
                             </div>
                             <div className={classes.progressBarMidIcon}>
                                 {(
-                                    setCurrentIcon 
-                                    ? <ReactSVG src={moon} className='weatherapp__icon' />  
-                                    : <ReactSVG src={sun} className='weatherapp__icon' />  
+                                    setCurrentIcon
+                                        ? <ReactSVG src={moon} className='weatherapp__icon' />
+                                        : <ReactSVG src={sun} className='weatherapp__icon' />
                                 )}
                             </div>
-                        </div>  
+                        </div>
                     </div>
 
                     <div className={`pbar ${classes.progressBar} ${classes.progressBarRight}`}
@@ -195,13 +219,13 @@ export const WeatherMain = ({ loading, weather }) => {
                         <ReactSVG src={sunset} className='weatherapp__icon' />
                     </div>
                     <h1 className={`weatherapp__block--title sm ${classes.sunBlockIconTitle}`}>
-                        {loading  ? '--' : convertTime(weather.sys.sunset)}
+                        {loading ? '--' : convertTime(weather.sys.sunset)}
                     </h1>
                 </div>
-                
+
 
             </div>
-        
+
         </div>
     )
 }
