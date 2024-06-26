@@ -9,7 +9,7 @@
         --secondary: #fcfff7;
         --primary-rgb: 47, 47, 47;
         --secondary-rgb: 252, 255, 247;
-        
+
         background-image: url(./assets/photos/weather_bg_#{$day-padded}d.jpg);
 
         .weatherapp__headingblock--icon {
@@ -35,8 +35,8 @@
     width: 100%;
     min-height: 100vh;
     padding: 4.5rem 0;
-
-    background-image: url(./assets/photos/weather_bg_01d.jpg);
+    
+    background-image: url(./assets/photos/weather_bg_00d.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -115,7 +115,7 @@
     fill: var(--primary);
 
     transition: transform .5s ease;
-    
+
     div {
         display: flex;
         align-items: center;

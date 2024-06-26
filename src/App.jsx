@@ -70,6 +70,12 @@ function App() {
         setActiveItemId(currentData.id)
     }, [currentData])
 
+    useEffect(() => {
+        if (!isEmpty(currentData)) {
+            getWeatherByLocation(currentData.coord.lat, currentData.coord.lon)
+        }
+    }, [])
+
     return (
         <div className="App">
 

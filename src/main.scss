@@ -32,9 +32,8 @@ html {
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
-    background: #FFA17F;
-    background: -webkit-linear-gradient(230deg, #00223E, #FFA17F);
-    background: linear-gradient(230deg, #00223E, #FFA17F);
+    background: rgb(80, 78, 98);
+    background: linear-gradient(180deg, rgba(133, 131, 152, 1) 0%, rgba(223, 188, 148, 1) 33%, rgba(213, 144, 115, 1) 67%, rgba(111, 80, 107, 1) 100%);
 
     font-family: "Kanit", sans-serif;
     font-size: 16px;
