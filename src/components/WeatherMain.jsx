@@ -1,5 +1,4 @@
 import React from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { isEmpty } from '../utils'
 
 import classes from './WeatherMain.module.scss'
@@ -14,9 +13,12 @@ import sun from '../assets/icons/sun.svg'
 import moon from '../assets/icons/moon.svg'
 import pin from '../assets/icons/pin.svg'
 
-export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
 
+export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
+    
     const isFavorite = favorites.some(obj => obj.id === weather.id)
+    
+    const showText = (text, placeholder = '--') => loading ? placeholder : text
 
     const convertTime = (unix_timestamp) => {
 
@@ -34,7 +36,6 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
         const now = weather.dt;
 
         if (now < start || now > end) {
-            // Ночь
             return now < start ? 50 : 100;
         }
 
@@ -84,10 +85,10 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
                 <div className={`weatherapp__headingblock--icon`}></div>
 
                 <div className={`weatherapp__block--regular ${classes.headingBlockSup}`}>
-                    {(loading || !weather) ? '--' : weather.weather[0].description}
+                    {showText(weather.weather[0].description)}
                 </div>
                 <h1 className={`weatherapp__block--title ${classes.headingBlockTitle}`}>
-                    {(loading || !weather) ? '--' : weather.name}, {loading || !weather ? '--' : weather.sys.country}
+                    {showText(weather.name)}, {showText(weather.sys.country)}
                 </h1>
 
                 <div className={classes.headingBlockTempHL}>
@@ -97,7 +98,7 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
                             &nbsp;
                         </span>
 
-                        {loading || !weather ? '--' : weather.main.temp_min}
+                        {showText(weather.main.temp_min)}
 
                         <span className='yellow'>
                             &nbsp;
@@ -110,7 +111,7 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
                             &nbsp;
                         </span>
 
-                        {loading || !weather ? '--' : weather.main.temp_max}
+                        {showText(weather.main.temp_max)}
 
                         <span className='yellow'>
                             &nbsp;
@@ -121,7 +122,7 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
 
                 <div className={`weatherapp__block ${classes.headingBlockTemp}`}>
                     <div className={`weatherapp__block--title ${classes.headingBlockTempTitle}`}>
-                        {loading ? '--' : weather.main.temp}
+                        {showText(weather.main.temp)}
                     </div>
                 </div>
 
@@ -133,14 +134,14 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
                     <div className={classes.regBlockIcon}>
 
                         <ReactSVG src={windIcon} style={{
-                            transform: `rotate(${loading ? 0 : weather.wind.deg}deg)`
+                            transform: `rotate(${showText(weather.wind.deg, 0)}deg)`
                         }} className='weatherapp__icon' />
 
                     </div>
 
                     <div>
                         <span className='weatherapp__block--title'>
-                            {loading ? '--' : (weather.wind.speed * 3.6).toFixed(1)}
+                            {showText((weather.wind.speed * 3.6).toFixed(1))}
                         </span>
                         &nbsp;
                         <span className='weatherapp__block--regular'>
@@ -158,7 +159,7 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
 
                     <div>
                         <span className='weatherapp__block--title'>
-                            {loading ? '--' : weather.clouds.all}
+                            {showText(weather.clouds.all)}
                         </span>
                         &nbsp;
                         <span className='weatherapp__block--regular'>
@@ -178,7 +179,7 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
                         <ReactSVG src={sunrise} className='weatherapp__icon' />
                     </div>
                     <h1 className={`weatherapp__block--title sm ${classes.sunBlockIconTitle}`}>
-                        {loading ? '--' : convertTime(weather.sys.sunrise)}
+                        {showText(convertTime(weather.sys.sunrise))}
                     </h1>
                 </div>
 
@@ -186,30 +187,26 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
                     <div
                         className={`pbar ${classes.progressBar} ${classes.progressBarLeft}`}
                         style={{
-                            width: `calc(${loading ? 50 : calcSunPos(weather.sys.sunrise, weather.sys.sunset)}% - 1.4rem)`
+                            width: `calc(${showText(calcSunPos(weather.sys.sunrise, weather.sys.sunset), 50)}% - 1.4rem)`
                         }}
                     ></div>
 
                     <div className={classes.progressBarMidWrapper} style={{
-                        left: `${loading ? 50 : calcSunPos(weather.sys.sunrise, weather.sys.sunset)}%`
+                        left: `${showText(calcSunPos(weather.sys.sunrise, weather.sys.sunset), 50)}%`
                     }}>
                         <div className={classes.progressBarMid}>
                             <div className={classes.progressBarMidTitle}>
-                                {loading ? '--' : convertTime(weather.dt)}
+                                {showText(convertTime(weather.dt), '--:--')}
                             </div>
                             <div className={classes.progressBarMidIcon}>
-                                {(
-                                    setCurrentIcon
-                                        ? <ReactSVG src={moon} className='weatherapp__icon' />
-                                        : <ReactSVG src={sun} className='weatherapp__icon' />
-                                )}
+                                <ReactSVG src={sun} className='weatherapp__icon' />
                             </div>
                         </div>
                     </div>
 
                     <div className={`pbar ${classes.progressBar} ${classes.progressBarRight}`}
                         style={{
-                            width: `calc(${loading ? 50 : 100 - calcSunPos(weather.sys.sunrise, weather.sys.sunset)}% - 1.4rem)`
+                            width: `calc(${showText((100 - calcSunPos(weather.sys.sunrise, weather.sys.sunset)), 50)}% - 1.4rem)`
                         }}
                     ></div>
                 </div>
@@ -219,7 +216,7 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
                         <ReactSVG src={sunset} className='weatherapp__icon' />
                     </div>
                     <h1 className={`weatherapp__block--title sm ${classes.sunBlockIconTitle}`}>
-                        {loading ? '--' : convertTime(weather.sys.sunset)}
+                        {showText(convertTime(weather.sys.sunset))}
                     </h1>
                 </div>
 

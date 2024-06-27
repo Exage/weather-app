@@ -1,4 +1,5 @@
 @import './_vars';
+@import './mixins';
 
 @mixin weather-type($day) {
 
@@ -93,6 +94,15 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         column-gap: 3.5rem;
+
+        @include bp($app-bp-2) {
+            // grid-template-columns: repeat(1, 1fr);
+            column-gap: 1.5rem;
+        }
+
+        @include bp($app-bp-3) {
+            grid-template-columns: repeat(1, 1fr);
+        }
     }
 }
 
@@ -109,6 +119,10 @@
     background-position: center;
 
     transition: background-image .5s ease;
+
+    @include bp($app-bp-1) {
+        display: none;
+    }
 }
 
 .weatherapp__icon {

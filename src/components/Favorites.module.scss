@@ -1,3 +1,7 @@
+@import '../mixins';
+
+$bp-1: 650px;
+
 .Favorites {
     position: relative;
     overflow: hidden;
@@ -41,6 +45,8 @@
         margin-bottom: 0;
         position: relative;
 
+        margin: 0 auto;
+
         box-shadow: none;
         border: 2px solid rgba(var(--white-rgb), 0.15);
 
@@ -53,9 +59,13 @@
         transition-duration: 200ms;
         transition-timing-function: ease;
 
-        &:last-child {
-            margin-right: 0;
-        }
+        // &:last-child {
+        //     margin-right: 0;
+
+        //     @include bp($bp-1) {
+        //         margin-right: auto;
+        //     }
+        // }
 
         &:hover > &Delete {
             transform: scale(1);

@@ -1,4 +1,7 @@
 @import '../vars';
+@import '../mixins';
+
+$weather-main-bp-1: 487px;
 
 .weatherMain {
     max-width: 54.5rem;
@@ -6,6 +9,10 @@
 
     margin: 0 auto;
     margin-top: 6rem;
+
+    @include bp($weather-main-bp-1) {
+        margin-top: 3rem;
+    }
 }
 
 .headingBlock {
@@ -26,8 +33,12 @@
         top: 2rem;
         right: 3rem;
 
-
         transition: transform .2s ease;
+
+        @include bp($app-bp-2) {
+            top: 1.5rem;
+            right: 2rem;
+        }
 
         div {
             display: flex;
@@ -55,6 +66,10 @@
     &Title {
         font-size: 4rem;
         letter-spacing: 0.2rem;
+
+        @include bp($app-bp-2) {
+            font-size: 3.2rem;
+        }
     }
 
     &Sup {
@@ -189,6 +204,8 @@
                 left: 50%;
                 transform: translateX(-50%);
                 font-weight: 600;
+                min-width: 5rem;
+                text-align: center;
             }
 
             &Icon {
