@@ -65,7 +65,12 @@ export const WeatherMain = ({ loading, weather, favorites, setFavorites }) => {
     }
 
     if (isEmpty(weather)) {
-        return <h1 style={{ textAlign: 'center', marginTop: '5rem' }}>Placeholder</h1>
+        return (
+            <div className={`weatherapp__block ${classes.startupBlock}`}>
+                {/* <h1 className={`weatherapp__block--title ${classes.startupBlockTitle}`}>Welcome</h1> */}
+                <p>Try searching for your city and save it to your favorites</p>
+            </div>
+        )
     }
 
     return (

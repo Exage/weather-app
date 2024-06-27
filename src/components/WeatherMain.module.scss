@@ -15,6 +15,20 @@ $weather-main-bp-1: 487px;
     }
 }
 
+.startupBlock {
+    max-width: 32rem;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+
+    color: var(--white);
+    background-color: rgba(var(--secondary-rgb), 0.1);
+
+    &Title {
+        margin-bottom: 1rem;
+    }
+}
+
 .headingBlock {
     position: relative;
     text-align: center;
